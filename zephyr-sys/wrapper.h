@@ -42,6 +42,7 @@ extern int errno;
 #include <zephyr/logging/log.h>
 #include <zephyr/bluetooth/bluetooth.h>
 #include <zephyr/drivers/flash.h>
+#include <zephyr/drivers/eeprom.h>
 #include <zephyr/irq.h>
 
 /*
@@ -80,6 +81,9 @@ ZR_GPIO(GPIO_INT_HIGH_1);
 ZR_GPIO(GPIO_INT_LEVEL_HIGH);
 ZR_GPIO(GPIO_INT_LEVEL_LOW);
 ZR_GPIO(GPIO_OUTPUT_ACTIVE);
+ZR_GPIO(GPIO_INT_EDGE_FALLING);
+ZR_GPIO(GPIO_INT_EDGE_RISING);
+
 
 #undef ZR_GPIO
 
