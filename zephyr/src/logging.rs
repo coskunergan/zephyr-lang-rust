@@ -64,13 +64,31 @@ cfg_if::cfg_if! {
     if #[cfg(target_has_atomic = "ptr")] {
         unsafe fn set_logger_internal(logger: &'static dyn Log) -> Result<(), SetLoggerError> {
             log::set_logger(logger)?;
-            log::set_max_level(LevelFilter::Info);
+            let level = crate::kconfig::CONFIG_LOG_DEFAULT_LEVEL as u32;
+            let filter = match level {
+                4 => LevelFilter::Debug,
+                3 => LevelFilter::Info,
+                2 => LevelFilter::Warn,
+                1 => LevelFilter::Error,
+                0 => LevelFilter::Off,
+                _ => LevelFilter::Info,
+            };
+            log::set_max_level(filter);
             Ok(())
         }
     } else {
         unsafe fn set_logger_internal(logger: &'static dyn Log) -> Result<(), SetLoggerError> {
             log::set_logger_racy(logger)?;
-            log::set_max_level_racy(LevelFilter::Info);
+            let level = crate::kconfig::CONFIG_LOG_DEFAULT_LEVEL as u32;
+            let filter = match level {
+                4 => LevelFilter::Debug,
+                3 => LevelFilter::Info,
+                2 => LevelFilter::Warn,
+                1 => LevelFilter::Error,
+                0 => LevelFilter::Off,
+                _ => LevelFilter::Info,
+            };
+            log::set_max_level_racy(filter);
             Ok(())
         }
     }
